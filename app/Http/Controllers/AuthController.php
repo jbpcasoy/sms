@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -68,5 +69,10 @@ class AuthController extends Controller
         ];
 
         return response($response, 201);
+    }
+
+    public function profile()
+    {
+        return Auth::user();
     }
 }
