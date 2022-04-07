@@ -18,7 +18,7 @@ class StudentFactory extends Factory
     public function definition()
     {
         return [
-            "student_lrn" => Str::random(12),
+            "student_lrn" => "" . mt_rand(000000000000, 999999999999),
             "first_name" => $this->faker->firstName(),
             "middle_name" => $this->faker->lastName(),
             "last_name" => $this->faker->lastName(),
