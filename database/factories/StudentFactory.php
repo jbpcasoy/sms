@@ -26,7 +26,10 @@ class StudentFactory extends Factory
 
         return [
             "student_lrn" =>
-                "" . $this->faker->randomFloat(0, 111111111111, 999999999999),
+                "" .
+                $this->faker
+                    ->unique()
+                    ->randomFloat(0, 111111111111, 999999999999),
             "first_name" => $this->faker->firstName(),
             "middle_name" => $this->faker->lastName(),
             "last_name" => $this->faker->lastName(),
