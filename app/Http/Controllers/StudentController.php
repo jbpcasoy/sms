@@ -14,6 +14,11 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
+        $request->validate([
+            "sort_column" =>
+                "in:student_lrn,first_name,middle_name,last_name,year_level,section",
+            "sort_order" => "in:asc,desc",
+        ]);
         return Student::where([
             ["student_lrn", "like", "%" . $request->input("student_lrn") . "%"],
             ["first_name", "like", "%" . $request->input("first_name") . "%"],
