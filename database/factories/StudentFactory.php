@@ -17,19 +17,27 @@ class StudentFactory extends Factory
      */
     public function definition()
     {
+        $year_level = $this->faker->randomElement([
+            "1ST YEAR",
+            "2ND YEAR",
+            "3RD YEAR",
+            "4TH YEAR",
+        ]);
+
         return [
-            "student_lrn" => "" . mt_rand(000000000000, 999999999999),
+            "student_lrn" =>
+                "" . $this->faker->randomFloat(0, 111111111111, 999999999999),
             "first_name" => $this->faker->firstName(),
             "middle_name" => $this->faker->lastName(),
             "last_name" => $this->faker->lastName(),
             "age" => random_int(18, 25),
-            "year_level" => $this->faker->randomElement([
-                "1ST YEAR",
-                "2ND YEAR",
-                "3RD YEAR",
-                "4TH YEAR",
-            ]),
-            "section" => $this->faker->word(),
+            "year_level" => $year_level,
+            "section" =>
+                "" .
+                $this->faker->randomElement(["BSIT", "BOE", "BSBA", "BSEMC"]) .
+                "-" .
+                $year_level[0] .
+                Str::upper($this->faker->randomLetter()),
         ];
     }
 }
