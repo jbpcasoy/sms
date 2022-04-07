@@ -20,22 +20,22 @@ class StudentController extends Controller
             "sort_order" => "in:asc,desc",
         ]);
         return Student::where([
-            ["student_lrn", "like", "%" . $request->input("student_lrn") . "%"],
-            ["first_name", "like", "%" . $request->input("first_name") . "%"],
-            ["middle_name", "like", "%" . $request->input("middle_name") . "%"],
-            ["last_name", "like", "%" . $request->input("last_name") . "%"],
-            ["year_level", "like", "%" . $request->input("year_level") . "%"],
-            ["section", "like", "%" . $request->input("section") . "%"],
+            ["student_lrn", "like", "%" . $request->get("student_lrn") . "%"],
+            ["first_name", "like", "%" . $request->get("first_name") . "%"],
+            ["middle_name", "like", "%" . $request->get("middle_name") . "%"],
+            ["last_name", "like", "%" . $request->get("last_name") . "%"],
+            ["year_level", "like", "%" . $request->get("year_level") . "%"],
+            ["section", "like", "%" . $request->get("section") . "%"],
         ])
             ->orderBy(
-                $request->input("sort_column"),
-                $request->input("sort_order")
+                $request->get("sort_column") ?? "student_lrn",
+                $request->get("sort_order") ?? "asc"
             )
             ->paginate(
-                $request->input("limit"),
+                $request->get("pageSize"),
                 ["*"],
-                "page",
-                $request->input("page")
+                "current",
+                $request->get("current")
             );
     }
 
