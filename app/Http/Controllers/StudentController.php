@@ -21,12 +21,17 @@ class StudentController extends Controller
             ["last_name", "like", "%" . $request->input("last_name") . "%"],
             ["year_level", "like", "%" . $request->input("year_level") . "%"],
             ["section", "like", "%" . $request->input("section") . "%"],
-        ])->paginate(
-            $request->input("limit"),
-            ["*"],
-            "page",
-            $request->input("page")
-        );
+        ])
+            ->orderBy(
+                $request->input("sort_column"),
+                $request->input("sort_order")
+            )
+            ->paginate(
+                $request->input("limit"),
+                ["*"],
+                "page",
+                $request->input("page")
+            );
     }
 
     /**
