@@ -16,7 +16,7 @@ class StudentController extends Controller
     {
         $request->validate([
             "sort_column" =>
-                "in:student_lrn,first_name,middle_name,last_name,year_level,section",
+                "in:student_lrn,first_name,middle_name,last_name,age,year_level,section",
             "sort_order" => "in:asc,desc",
         ]);
         return Student::where([
@@ -25,6 +25,7 @@ class StudentController extends Controller
             ["middle_name", "like", "%" . $request->get("middle_name") . "%"],
             ["last_name", "like", "%" . $request->get("last_name") . "%"],
             ["year_level", "like", "%" . $request->get("year_level") . "%"],
+            ["age", "like", "%" . $request->get("age") . "%"],
             ["section", "like", "%" . $request->get("section") . "%"],
         ])
             ->orderBy(
@@ -52,7 +53,7 @@ class StudentController extends Controller
             "first_name" => "required",
             "last_name" => "required",
             "age" => "required",
-            "year_level" => "required",
+            "year_level" => "in:1ST YEAR,2ND YEAR,3RD YEAR,4TH YEAR",
             "section" => "required",
         ]);
 
