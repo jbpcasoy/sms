@@ -17,7 +17,7 @@ class StudentController extends Controller
         $request->validate([
             "sort_column" =>
                 "in:student_lrn,first_name,middle_name,last_name,year_level,section",
-            "sort_order" => "in:asc,desc,ascend,descend,ascending,descending",
+            "sort_order" => "in:asc,desc",
         ]);
         return Student::where([
             ["student_lrn", "like", "%" . $request->get("student_lrn") . "%"],
