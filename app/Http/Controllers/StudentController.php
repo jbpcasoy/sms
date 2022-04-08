@@ -14,14 +14,30 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
+        $request->validate([
+            "sort_column" =>
+                "in:student_lrn,first_name,middle_name,last_name,age,year_level,section",
+            "sort_order" => "in:asc,desc",
+        ]);
         return Student::where([
-            ["student_lrn", "like", "%" . $request->input("student_lrn") . "%"],
-            ["first_name", "like", "%" . $request->input("first_name") . "%"],
-            ["middle_name", "like", "%" . $request->input("middle_name") . "%"],
-            ["last_name", "like", "%" . $request->input("last_name") . "%"],
-            ["year_level", "like", "%" . $request->input("year_level") . "%"],
-            ["section", "like", "%" . $request->input("section") . "%"],
-        ])->get();
+            ["student_lrn", "like", "%" . $request->get("student_lrn") . "%"],
+            ["first_name", "like", "%" . $request->get("first_name") . "%"],
+            ["middle_name", "like", "%" . $request->get("middle_name") . "%"],
+            ["last_name", "like", "%" . $request->get("last_name") . "%"],
+            ["year_level", "like", "%" . $request->get("year_level") . "%"],
+            ["age", "like", "%" . $request->get("age") . "%"],
+            ["section", "like", "%" . $request->get("section") . "%"],
+        ])
+            ->orderBy(
+                $request->get("sort_column") ?? "student_lrn",
+                $request->get("sort_order") ?? "asc"
+            )
+            ->paginate(
+                $request->get("pageSize"),
+                ["*"],
+                "current",
+                $request->get("current")
+            );
     }
 
     /**
@@ -36,8 +52,8 @@ class StudentController extends Controller
             "student_lrn" => "required|unique:students,student_lrn",
             "first_name" => "required",
             "last_name" => "required",
-            "age" => "required",
-            "year_level" => "required",
+            "age" => "required|integer",
+            "year_level" => "in:1ST YEAR,2ND YEAR,3RD YEAR,4TH YEAR",
             "section" => "required",
         ]);
 
@@ -64,6 +80,15 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            "student_lrn" => "required|unique:students,student_lrn," . $id,
+            "first_name" => "required",
+            "last_name" => "required",
+            "age" => "required|integer",
+            "year_level" => "in:1ST YEAR,2ND YEAR,3RD YEAR,4TH YEAR",
+            "section" => "required",
+        ]);
+
         $student = Student::find($id);
 
         $student->update($request->all());

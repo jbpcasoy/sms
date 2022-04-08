@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -55,10 +56,8 @@ class AuthController extends Controller
         // find user by email
         $user = User::where("email", $fields["email"])->first();
 
-        if (!$user) {
-            return response(["message" => "Email does not exist"], 401);
-        } elseif (!Hash::check($fields["password"], $user->password)) {
-            return response(["message" => "Wrong password"], 401);
+        if (!$user || !Hash::check($fields["password"], $user->password)) {
+            return response(["message" => "Wrong credentials"], 403);
         }
 
         // TODO use env for token key
@@ -67,8 +66,14 @@ class AuthController extends Controller
         $response = [
             "user" => $user,
             "token" => $token,
+            "status" => "ok",
         ];
 
         return response($response, 201);
+    }
+
+    public function profile()
+    {
+        return Auth::user();
     }
 }

@@ -24,6 +24,7 @@ Route::post("/login", [AuthController::class, "login"]);
 Route::group(["middleware" => ["auth:sanctum"]], function () {
     Route::resource("students", StudentController::class);
     Route::post("/logout", [AuthController::class, "logout"]);
+    Route::get("/profile", [AuthController::class, "profile"]);
 });
 
 Route::middleware("auth:sanctum")->get("/user", function (Request $request) {
