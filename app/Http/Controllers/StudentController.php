@@ -52,7 +52,7 @@ class StudentController extends Controller
             "student_lrn" => "required|unique:students,student_lrn",
             "first_name" => "required",
             "last_name" => "required",
-            "age" => "required",
+            "age" => "required|integer",
             "year_level" => "in:1ST YEAR,2ND YEAR,3RD YEAR,4TH YEAR",
             "section" => "required",
         ]);
@@ -80,6 +80,15 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            "student_lrn" => "required|unique:students,student_lrn," . $id,
+            "first_name" => "required",
+            "last_name" => "required",
+            "age" => "required|integer",
+            "year_level" => "in:1ST YEAR,2ND YEAR,3RD YEAR,4TH YEAR",
+            "section" => "required",
+        ]);
+
         $student = Student::find($id);
 
         $student->update($request->all());
